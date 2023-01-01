@@ -1,19 +1,17 @@
 <nav class="breadcrumb">
     <% for (var i = 0; i < breadcrumb.length; i++) { %>
-
-        <% if (i == breadcrumb.length - 1){ %>
+        <% if (i === breadcrumb.length - 1){ %>
             <%= breadcrumb[i].name ;%>
         <% }else{ %>
             <a href="/<%= breadcrumb[i].url ;%>"> <%= breadcrumb[i].name ;%> &raquo; </a>
         <% } %>
-
     <% } %>
 </nav>
 
-<h1 class="photo-title">PHOTO.EJS <%= name ;%></h1>
+<h1 class="photo-title"><%= name ;%></h1>
 
 <figure class="photo">
-    <img src="/<%= src ;%>?tn=0" alt="<%= name ;%>">
+    <img src="/<%= src ;%>" alt="<%= name ;%>">
     <figcaption>
         <% if (exif && exif.Description){ %>
             <%= exif.Description ;%>
@@ -28,7 +26,7 @@
         <h2>Info</h2>
         <table>
             <% for (var key in exif){ %>
-                <% if (key != 'Description'){ %>
+                <% if (key !== 'Description'){ %>
                     <tr>
                         <td>
                             <%= key ;%>

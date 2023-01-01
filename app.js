@@ -9,15 +9,19 @@ app.set('view engine', 'ejs');
 app.use(express.static('./'));
 
 const galleryDir = 'gallery';
+const title = 'TRON Collection';
 
 app.use(`/${galleryDir}`, require('./lib/gallery.js')({
     staticFiles: `resources/${galleryDir}`,
     urlRoot: galleryDir,
-    title: 'TRON Collection',
-    render: false, //
+    title,
+    render: false,
 }), function (req, res, next) {
     console.log(`Returning response for ${req.originalUrl}`);
-    return res.render('gallery', { galleryHtml: req.html });
+    return res.render('gallery', {
+        galleryHtml: req.html,
+        title,
+    });
 });
 
 app.listen(port, host);
