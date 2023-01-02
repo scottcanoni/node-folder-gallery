@@ -189,7 +189,8 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    margin: auto;
+    bottom: 20px;
+    margin: 25px auto;
     box-sizing: border-box;
     background-clip: padding-box;
     width: 200px;
@@ -199,7 +200,7 @@ body {
     -webkit-mask: linear-gradient(rgba(0, 0, 0, 0.1), #000000 90%);
     transform-origin: 50% 60%;
     transform: perspective(200px) rotateX(66deg);
-    animation: spinner-wiggle 1.2s infinite;
+    animation: spinner-wiggle 2.4s infinite;
 }
 @keyframes spinner-wiggle {
     30% {
@@ -216,7 +217,7 @@ body {
     }
 }
 footer {
-    height: 300px;
+    height: 800px;
 }
 .footer-links a:before,
 .footer-links a:after {
