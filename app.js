@@ -21,6 +21,7 @@ app.use(`/${galleryDir}`, require('./lib/gallery.js')({
     return res.render('gallery', {
         galleryHtml: req.html,
         title,
+        urlRoot: galleryDir,
     });
 });
 

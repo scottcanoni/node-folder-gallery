@@ -1,22 +1,22 @@
+<h1 class="photo-title"><%= friendlyName; %></h1>
+
 <nav class="breadcrumb">
     <% for (var i = 0; i < breadcrumb.length; i++) { %>
         <% if (i === breadcrumb.length - 1){ %>
-            <%= breadcrumb[i].name ;%>
+            <%= breadcrumb[i].name; %>
         <% }else{ %>
-            <a href="/<%= breadcrumb[i].url ;%>"> <%= breadcrumb[i].name ;%> &raquo; </a>
+            <a href="/<%= breadcrumb[i].url; %>"> <%= breadcrumb[i].name; %></a><span> &raquo; </span>
         <% } %>
     <% } %>
 </nav>
 
-<h1 class="photo-title"><%= friendlyName ;%></h1>
-
 <figure class="photo">
-    <img src="/<%= src ;%>" alt="<%= name ;%>">
+    <img src="/<%= src; %>" alt="<%= fileName; %>">
     <figcaption>
         <% if (exif && exif.Description){ %>
-            <%= exif.Description ;%>
+            <%= exif.Description; %>
         <% }else{ %>
-            <%= name ;%>
+            <%= fileName; %>
         <% } %>
     </figcaption>
 </figure>
@@ -25,14 +25,22 @@
     <section class="info">
         <h2>Info</h2>
         <table>
+            <tr>
+                <td>
+                    File Name
+                </td>
+                <td>
+                    <%= fileName; %>
+                </td>
+            </tr>
             <% for (var key in exif){ %>
                 <% if (key !== 'Description'){ %>
                     <tr>
                         <td>
-                            <%= key ;%>
+                            <%= key; %>
                         </td>
                         <td>
-                            <%= exif[key] ;%>
+                            <%= exif[key]; %>
                         </td>
                     </tr>
                 <% } %>

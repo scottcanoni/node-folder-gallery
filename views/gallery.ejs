@@ -5,9 +5,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
-    <link href="/theme.css" rel="stylesheet" type="text/css" />
+    <link href="/styles/theme.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <%- galleryHtml; %>
+    <div class='background-container'>
+        <div class='tron'></div>
+    </div>
+    <div class='gallery'>
+        <%- galleryHtml; %>
+
+        <footer>
+            <div class='footer-links'>
+                <a href="/<%- urlRoot %>"></a>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>

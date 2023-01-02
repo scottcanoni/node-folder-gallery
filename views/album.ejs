@@ -1,16 +1,16 @@
+<h1 class="album-title"><%= name ;%></h1>
+
 <% if (!isRoot){ %>
     <nav class="breadcrumb">
         <% for (var i = 0; i < breadcrumb.length; i++) { %>
             <% if (i === breadcrumb.length - 1){ %>
                 <%= breadcrumb[i].name ;%>
             <% }else{ %>
-                <a href="/<%= breadcrumb[i].url ;%>"> <%= breadcrumb[i].name ;%> &raquo; </a>
+            <a href="/<%= breadcrumb[i].url; %>"> <%= breadcrumb[i].name; %></a><span> &raquo; </span>
             <% } %>
         <% } %>
     </nav>
 <% } %>
-
-<h1 class="album-title"><%= name ;%></h1>
 
 <% if (albums.length > 0){ %>
     <h2>Albums</h2>
