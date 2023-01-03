@@ -4,9 +4,9 @@
     <nav class="breadcrumb">
         <% for (var i = 0; i < breadcrumb.length; i++) { %>
             <% if (i === breadcrumb.length - 1){ %>
-                <%= breadcrumb[i].name ;%>
+                <span><%= breadcrumb[i].name; %></span>
             <% }else{ %>
-            <a href="/<%= breadcrumb[i].url; %>"> <%= breadcrumb[i].name; %></a><span> &raquo; </span>
+                <a href="/<%= breadcrumb[i].url; %>"> <%= breadcrumb[i].name; %></a><span> &raquo; </span>
             <% } %>
         <% } %>
     </nav>
