@@ -5,3 +5,4 @@ Display a simple folder gallery of image, and other supported media in a simple,
 ### TODO:
 
 1. Config flag for showing friendly incrementing image name based on directory name
+2. Remove dependency on underscore
