@@ -3,7 +3,8 @@
     "name": "node-folder-gallery",
     "description": "Display a simple folder gallery of image, and other supported media in a simple, easy to browse interface with deep linking to specific folders and media.",
     "version": "0.0.1",
-    "license": "private",
+    "license": "UNLICENSED",
+    "private": true,
     "repository": {
         "url": ""
     },
