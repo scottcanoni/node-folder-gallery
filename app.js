@@ -6,7 +6,6 @@ const host = process.env.OPENSHIFT_NODEJS_IP || 'localhost';
 const app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(express.static('./'));
 
 const galleryDir = 'gallery';
 const title = 'TRON Collection';
