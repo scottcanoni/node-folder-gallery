@@ -8,10 +8,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 const galleryDir = 'gallery';
-const title = 'TRON Collection';
+const title = 'Image Collection';
 
 app.use(`/${galleryDir}`, require('./lib/gallery.js')({
-    staticFiles: `resources/${galleryDir}`,
+    staticFiles: `/${galleryDir}`,
     urlRoot: galleryDir,
     title,
     render: false,
@@ -19,11 +19,11 @@ app.use(`/${galleryDir}`, require('./lib/gallery.js')({
     console.log(`Returning response for ${req.originalUrl}`);
     return res.render('gallery', {
         galleryHtml: req.html,
-        title,
         urlRoot: galleryDir,
+        title,
     });
 });
 
 app.listen(port, host);
 
-console.log(`Web server listening on http://${host}:${port}/${galleryDir}`);
+console.log(`Web server listening at: http://${host}:${port}/${galleryDir}`);
