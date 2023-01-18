@@ -12,7 +12,7 @@ const common = {};
 
 common.breadcrumb = function (pathStr) {
     let paths;
-    // TODO: Use path.separator instead?
+    // TODO: Use path.separator instead? Didn't work.
     if (pathStr.indexOf('\\') !== -1) {
         paths = pathStr.split('\\');
     }

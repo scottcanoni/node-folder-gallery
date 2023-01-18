@@ -10,7 +10,7 @@ app.set('view engine', 'ejs');
 const galleryDir = 'gallery';
 const title = 'Image Collection';
 
-app.use(`/${galleryDir}`, require('./lib/gallery.js')({
+app.use(`/${galleryDir}`, require('./gallery.js')({
     staticFiles: `/${galleryDir}`,
     urlRoot: galleryDir,
     title,

@@ -1,7 +1,7 @@
 Node Folder Gallery
 ====
 
-Display a gallery of images and folders, with an easy to browse interface.  Allows for deep linking to specific folders and images.
+Display a gallery of images and folders, with an easy to browse interface. Allows for deep linking to specific folders and images.
 
 Features:
 ----
@@ -25,12 +25,12 @@ Dependencies:
 Install
 ----
 
-Node Folder Gallery is an Express Middleware so you can 
+Node Folder Gallery is an Express Middleware so you can
 
 1. `yarn add node-folder-gallery` or `npm install node-folder-gallery`
 2. Create a directory named `gallery` with some photos or folders of photos.
 3. Create a file named `app.js`, example below.
-4. Create a 
+4. Create a
 
 Usage
 ----
@@ -69,7 +69,7 @@ console.log(`Web server listening on http://localhost:3000/${galleryDir}`);
 
 ImageMagick
 ----
-Node Folder Gallery requires ImageMagick. Installation instructions for mac can be found at
+Node Folder Gallery requires ImageMagick to create thumbnails.
 
 For Windows, select the specific imagemagick installer for your system, e.g., http://sourceforge.net/projects/imagemagick/files/6.8.9-exes/ImageMagick-6.8.9-4-Q16-x64-dll.exe/download
 
@@ -103,4 +103,4 @@ fully, and I noticed it hadn't been updated in over 8 years plus it had opened p
 
 Thus, Node Folder Gallery was born.
 
-The images used in this repo are all from the Public Domain and are used as an example.  If the website that provided these to me lied, let me know and I can swap them out.
+The images used in this repo are all from the Public Domain and are used as an example. If the website that provided these to me lied, let me know and I can swap them out.

@@ -39,8 +39,7 @@ function sortObject(obj, providedOrder) {
 }
 
 /*
- * Utility function to convert exif data into something a bit more consumable
- * by a template
+ * Utility function to convert exif data into something more consumable by a template
  */
 const exif = function (staticPath, callback) {
     try {
