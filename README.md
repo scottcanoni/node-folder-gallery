@@ -1,7 +1,7 @@
 Node Folder Gallery
 ====
 
-Display a gallery of images and folders, with an easy to browse interface. Allows for deep linking to specific folders and images.
+Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, Imagemagick, EXIF, and Memory Cache.
 
 Features:
 ----
@@ -18,24 +18,36 @@ Dependencies:
 ----
 
 1. ExpressJS to serve pages and handle requests for thumbnails.
-2. Imagemagik to create thumbnails.
+2. Imagemagick to create thumbnails.
 3. Exif to read image metadata.
 4. Memory Cache to save generated thumbnails for performance reasons.
 
-Install
+
+Run
 ----
 
-Node Folder Gallery is an Express Middleware so you can
+To run demo locally:
 
-1. `yarn add node-folder-gallery` or `npm install node-folder-gallery`
-2. Create a directory named `gallery` with some photos or folders of photos.
-3. Create a file named `app.js`, example below.
-4. Create a
+1. Run `yarn add node-folder-gallery`
+2. Run `yarn`
+3. Run `yarn start`
 
-Usage
+then open a browser to  http://localhost:3000/gallery.
+
+
+Integrate
 ----
 
-app.js
+Node Folder Gallery is an Express Middleware that you connect to your existing project or use it to start a new project easily.
+
+1. Run `yarn add node-folder-gallery` or `npm install node-folder-gallery`
+2. Copy the contents of the folder `./example` to your project.
+3. Fill the directory named `./gallery` with your own photos or folders of photos.
+4. Optionally modify the file named `index.js` to add your own title, example below.
+5. Run `node ./index.js`
+
+
+index.js
 -------
 
 ```js
@@ -79,26 +91,16 @@ For Mac, install imagemagick from: http://www.imagemagick.org/script/binary-rele
 2. Make sure that imagemagick tools are available on system path (e.g., you can test if you can run "convert.exe" from CMD)
 3. Restart cygwin, CMD or whatever you use to fire up node.js
 
-Run Locally
-----
-
-To run demo locally:
-
-- `yarn`
-- `yarn start`
-
-then open a browser to  http://localhost:3000/gallery.
-
 Future Ideas
 ----
 
-- Config flag for showing friendly incrementing image name based on directory name
-- Add config flag to not return styles
+- Config flag for disabling of the friendly incrementing image name based on directory name
+- Config flag to not return styles
 
 Notes
 ----
 
-I created this because I needed my own image gallery organized by folders of images for my own collection. I found (node-gallery|https://github.com/cianclarke/node-gallery) but it didn't work for me
+I created this because I needed my own image gallery organized by folders of images for my own collection. I found [node-gallery](https://github.com/cianclarke/node-gallery), but it didn't work for me
 fully, and I noticed it hadn't been updated in over 8 years plus it had opened pull requests and vulnerable dependencies.
 
 Thus, Node Folder Gallery was born.

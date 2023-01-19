@@ -1,17 +1,14 @@
 {
     "author": "Scott Canoni",
     "name": "node-folder-gallery",
-    "description": "Display a simple folder gallery of image, and other supported media in a simple, easy to browse interface with deep linking to specific folders and media.",
+    "description": "Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, Imagemagick, EXIF, and Memory Cache.",
     "version": "0.1.0",
-    "license": "UNLICENSED",
-    "private": true,
+    "license": "WTFPL",
     "repository": {
-        "url": ""
+        "type": "git",
+        "url": "https://github.com/scottcanoni/node-folder-gallery.git"
     },
     "main": "src/gallery.js",
-    "engines": {
-        "node": ">=0.6.2"
-    },
     "scripts": {
         "start": "node src/app.js"
     },
