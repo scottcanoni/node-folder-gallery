@@ -1,7 +1,7 @@
 {
     "author": "Scott Canoni",
     "name": "node-folder-gallery",
-    "description": "Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, Imagemagick, EXIF, and Memory Cache.",
+    "description": "Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, EJS, Imagemagick, EXIF, and Memory Cache.",
     "version": "0.1.0",
     "license": "WTFPL",
     "repository": {

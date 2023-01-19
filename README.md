@@ -1,7 +1,7 @@
 Node Folder Gallery
 ====
 
-Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, Imagemagick, EXIF, and Memory Cache.
+Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, EJS, Imagemagick, EXIF, and Memory Cache.
 
 Features:
 ----
@@ -28,9 +28,10 @@ Run
 
 To run demo locally:
 
-1. Run `yarn add node-folder-gallery`
-2. Run `yarn`
-3. Run `yarn start`
+1. Run `git clone https://github.com/scottcanoni/node-folder-gallery.git`
+2. Run `cd ./node-folder-gallery`
+3. Run `yarn`
+4. Run `yarn start`
 
 then open a browser to  http://localhost:3000/gallery.
 
