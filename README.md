@@ -3,6 +3,13 @@ Node Folder Gallery
 
 Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, EJS, Imagemagick, EXIF, and Memory Cache.
 
+Demo
+----
+
+[DEMO](https://t81047.sse.codesandbox.io/)
+
+[CodeSandbox](https://codesandbox.io/s/node-folder-gallery-example-t81047)
+
 Features:
 ----
 
