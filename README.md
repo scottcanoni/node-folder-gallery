@@ -13,13 +13,12 @@ Demo
 Features:
 ----
 
-1. Very few dependencies.
-2. Easy to style with your own CSS.
-3. Automatic discovery of sub-folders and images within `gallery` folder.
-4. Album view for folders, and Photo view for individual images.
-5. Photo information embedded in the file (EXIF) will be displayed on the photo page.
-6. Support for folders/albums with the `#` symbol, helpful for collections of items that are numbered or duplicate.
-7. Image filenames will automatically be named after the folder with a sequential # following each image.
+1. Automatic discovery of sub-folders and images within your `gallery` folder.
+2. Album view for folders, and Photo view for individual images.
+3. Easy to style with your own CSS.
+4. Photo information embedded in the file (EXIF) will be displayed on the photo page.
+5. Support for folders/albums with the `#` symbol, helpful for collections of items that are numbered or duplicate.
+6. Image filenames will automatically be named after the folder with a sequential # following each image.
 
 Dependencies:
 ----
