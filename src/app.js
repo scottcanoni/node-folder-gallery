@@ -1,7 +1,7 @@
 // Usage example with ExpressJS
 const express = require('express');
-const port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 3000;
-const host = process.env.OPENSHIFT_NODEJS_IP || 'localhost';
+const port = process.env.PORT || 3000;
+const host = process.env.HOST || 'localhost';
 
 const app = express();
 app.set('views', __dirname + '/views');
