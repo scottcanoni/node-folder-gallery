@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const exif = require('./exif');
+const isPhoto = /(\.(jpg|bmp|jpeg|gif|png|tif))$/i;
 let common;
 
 module.exports = function (config) {
@@ -30,6 +31,15 @@ module.exports = function (config) {
             const breadcrumbs = common.breadcrumb(common.friendlyPath(photoBreadcrumbPath));
             const friendlyPrefix = breadcrumbs.length < 3 ? config.title : breadcrumbs[breadcrumbs.length - 2].name;
 
+            let prevFile = fileIndex > 0 ? files[fileIndex - 1] : null;
+            if (prevFile !== null) {
+                prevFile = prevFile.replace(isPhoto, '');
+            }
+            let nextFile = fileIndex < files.length - 1 ? files[fileIndex + 1] : null;
+            if (nextFile !== null) {
+                nextFile = nextFile.replace(isPhoto, '');
+            }
+
             exif(photoFileSystemPath, function (exifErr, exifInfo) {
                 req.tpl = 'photo.ejs';
                 req.data = {
@@ -42,6 +52,10 @@ module.exports = function (config) {
                     srcUnEncoded: photoWebPath,
                     path: photoBreadcrumbPath,
                     exif: exifErr ? {} : exifInfo,
+                    files,
+                    fileIndex,
+                    prevFile,
+                    nextFile,
                 };
 
                 return next();

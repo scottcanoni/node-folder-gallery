@@ -10,6 +10,16 @@
     <% } %>
 </nav>
 
+<nav class="album-nav">
+<% if (prevFile) { %>
+    <a href="./<%= prevFile %>">Previous Photo</a>
+<% } %>
+
+<% if (nextFile) { %>
+    <a href="./<%= nextFile %>">Next Photo</a>
+<% } %>
+</nav>
+
 <figure class="photo">
     <img src="/<%= src; %>" alt="<%= fileName; %>">
     <figcaption>
