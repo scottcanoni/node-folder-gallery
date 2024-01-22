@@ -4,7 +4,6 @@ const nodeFolderGalleryMiddleware = require('node-folder-gallery');
 const app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(express.static('./'));
 
 const galleryDir = 'gallery';
 const title = 'My Gallery';
@@ -21,6 +20,9 @@ app.use(`/${galleryDir}`, nodeFolderGalleryMiddleware({
         title,
     });
 });
+
+// Make sure static serving is added AFTER the middleware above, so asset requests can be handled and thumbnails can be created automatically
+app.use(express.static('./'));
 
 app.listen(3000, 'localhost');
 
