@@ -13,11 +13,12 @@ module.exports = function (config) {
     config.urlRoot = common.friendlyPath(config.urlRoot);
     config.cacheDir = config.cacheDir || './cache';
     config.render = config.render || false;
+    config.verbose = config.verbose || false;
     config.thumbnail = config.thumbnail || {};
     config.thumbnail.width = config.thumbnail.width || 300;
     config.thumbnail.height = config.thumbnail.height || 200;
 
-    console.log('node-folder-gallery middleware connected, using config:', config);
+    config.verbose && console.log('node-folder-gallery middleware connected, using config:', config);
 
     return require('./middleware')(config);
 };

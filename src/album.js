@@ -20,6 +20,7 @@ module.exports = function (cfg) {
 
         // Request for an album thumbnail
         if (req.query.tn === '1') {
+            config.verbose && console.log('Request is for thumbnail of: ', req.originalUrl);
             return getThumbnailForAlbum(staticFilesPath, pathFromReq, function (err, thumb) {
                 if (err) {
                     return common.error(req, res, next, 404, 'No getThumbnailForAlbum found for this album', err);

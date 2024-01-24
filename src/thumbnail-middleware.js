@@ -6,7 +6,7 @@ const im = require('imagemagick-stream');
 
 module.exports = function (config) {
     const common = require('./common')(config);
-    const { staticFiles, cacheDir } = config;
+    const { staticFiles, cacheDir, verbose } = config;
 
     return (req, res, next) => {
         let filePath;
@@ -36,6 +36,7 @@ module.exports = function (config) {
 
             // TODO: eventually should just try the fs.read on cachedResult, existsSync is a bad hack
             if (cachedResult && fs.existsSync(cachedResult)) {
+                verbose && console.log('Returning cache for ', filePath);
                 // cache hit - read & return
                 const cacheReadStream = fs.createReadStream(cachedResult);
                 cacheReadStream.on('error', function () {
@@ -63,7 +64,14 @@ module.exports = function (config) {
             cache.put(cachedThumbnailKey, cacheWritePath);
 
             // Also stream the resized result back as the response
-            return resizeStream.pipe(res);
+            cacheWriteStream.on('error', function () {
+                verbose && console.log('cacheWriteStream ERROR for ', filePath);
+                return common.error(req, res, next, 500, 'Error in IM/GM converting file', err);
+            });
+            cacheWriteStream.on('finish', function () {
+                verbose && console.log('cacheWriteStream finished for ', filePath);
+                return resizeStream.pipe(res);
+            });
         });
     };
 };

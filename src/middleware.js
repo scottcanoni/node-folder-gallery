@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = function (config) {
     const app = express();
-    const { staticFiles } = config;
+    const { staticFiles, verbose } = config;
     const common = require('./common')(config);
     const album = require('./album')(config);
     const photo = require('./photo')(config);
@@ -17,6 +17,7 @@ module.exports = function (config) {
     // Photos
     app.get(/.+(\.(jpg|bmp|jpeg|gif|png|tif)(\?tn=(1|0))?)$/i, function (req, res, next) {
         const filePath = decodeURIComponent(path.join(staticFiles, req.path));
+        verbose && console.log('Handling image request', req.originalUrl);
 
         fs.stat(filePath, function (err) {
             if (err) {
