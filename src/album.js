@@ -32,22 +32,21 @@ module.exports = function (cfg) {
             });
         }
 
-        // Determined we're not requesting the getThumbnailForAlbum file - render the album page
-        fs.readdir(staticFilesPath, function (err, files) {
-            if (err) {
-                return common.error(req, res, next, 404, 'No album found', err);
-            }
-            const breadcrumb = common.breadcrumb(pathFromReq);
-            const friendlyPrefix = breadcrumb && breadcrumb.length ? breadcrumb[breadcrumb.length - 1].name : config.title;
-            data.isRoot = (req.path === '/' || req.path === '');
-            data.breadcrumb = breadcrumb;
-            data.name = friendlyPrefix;
-            data.albums = getAlbums(files, staticFilesPath, pathFromReq);
-            data.photos = getPhotos(files, staticFilesPath, pathFromReq, friendlyPrefix);
-            req.data = data;
-            req.tpl = 'album.ejs';
-            return next();
-        });
+        const files = fs.readdirSync(staticFilesPath);
+        if (!files) {
+            return common.error(req, res, next, 404, 'No album files found');
+        }
+
+        const breadcrumb = common.breadcrumb(pathFromReq);
+        const friendlyPrefix = breadcrumb && breadcrumb.length ? breadcrumb[breadcrumb.length - 1].name : config.title;
+        data.isRoot = (req.path === '/' || req.path === '');
+        data.breadcrumb = breadcrumb;
+        data.name = friendlyPrefix;
+        data.albums = getAlbums(files, staticFilesPath, pathFromReq);
+        data.photos = getPhotos(files, staticFilesPath, pathFromReq, friendlyPrefix);
+        req.data = data;
+        req.tpl = 'album.ejs';
+        return next();
     };
 };
 

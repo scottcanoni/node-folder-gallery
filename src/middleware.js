@@ -19,24 +19,23 @@ module.exports = function (config) {
         const filePath = decodeURIComponent(path.join(staticFiles, req.path));
         verbose && console.log('Handling image request', req.originalUrl);
 
-        fs.stat(filePath, function (err) {
-            if (err) {
-                return common.error(req, res, next, 404, 'File not found', err);
-            }
+        const stat = fs.statSync(filePath);
+        if (!stat) {
+            return common.error(req, res, next, 404, `File not found in middleware ${filePath}`);
+        }
 
-            if (req.query && req.query.tn && req.query.tn === '1') {
-                return thumbnailMiddleware(req, res, next);
-            }
+        if (req.query && req.query.tn && req.query.tn === '1') {
+            return thumbnailMiddleware(req, res, next);
+        }
 
-            const fstream = fs.createReadStream(filePath);
-            fstream.on('error', function (err) {
-                console.log('Error?', err);
-                return common.error(req, res, next, 404, 'File not found', err);
-            });
-
-            // Return the full size file:
-            return fstream.pipe(res);
+        const fstream = fs.createReadStream(filePath);
+        fstream.on('error', function (err) {
+            verbose && console.log('fstream Error?', err);
+            return common.error(req, res, next, 404, 'File not found', err);
         });
+
+        // Return the full size file:
+        return fstream.pipe(res);
     });
 
     // Photo Pages - anything containing */photo/*
