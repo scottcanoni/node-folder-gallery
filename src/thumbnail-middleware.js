@@ -66,12 +66,14 @@ module.exports = function (config) {
             // Also stream the resized result back as the response
             cacheWriteStream.on('error', function () {
                 verbose && console.log('cacheWriteStream ERROR for ', filePath);
-                return common.error(req, res, next, 500, 'Error in IM/GM converting file', err);
+                return common.error(req, res, next, 500, 'cacheWriteStream ERROR', err);
             });
             cacheWriteStream.on('finish', function () {
                 verbose && console.log('cacheWriteStream finished for ', filePath);
-                return resizeStream.pipe(res);
+
             });
+
+            return resizeStream.pipe(res);
         });
     };
 };
