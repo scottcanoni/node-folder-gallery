@@ -22,11 +22,6 @@ module.exports = function (config) {
             return common.error(req, res, next, 404, 'File not found');
         }
 
-        const fstream = fs.createReadStream(filePath);
-        fstream.on('error', function (err) {
-            return common.error(req, res, next, 404, 'File not found', err);
-        });
-
         // Resize the file and then stream the results to cache and back to the user
         const dimensions = `${config.thumbnail.width}x${config.thumbnail.height}`;
         const cachedThumbnailUniqueTraits = filePath + dimensions + req.albumThumbnail;
@@ -37,7 +32,7 @@ module.exports = function (config) {
 
         // TODO: eventually should just try the fs.read on cachedResult, existsSync is a bad hack
         if (cachedResult && fs.existsSync(cachedResult)) {
-            verbose && console.log('Returning cache for ', filePath);
+            verbose && console.log('Returning cache for ', cachedThumbnailKey, filePath);
             // cache hit - read & return
             const cacheReadStream = fs.createReadStream(cachedResult);
             cacheReadStream.on('error', function () {
@@ -58,6 +53,11 @@ module.exports = function (config) {
             return common.error(req, res, next, 500, 'Error in IM/GM converting file', err);
         });
 
+        verbose && console.log('Reading file and creating cache for ', cachedThumbnailKey, filePath);
+        const fstream = fs.createReadStream(filePath);
+        fstream.on('error', function (err) {
+            return common.error(req, res, next, 404, 'File not found', err);
+        });
         const resizeStream = fstream.pipe(resizer);
 
         // Pipe to our tmp cache file, so we can use this in future
