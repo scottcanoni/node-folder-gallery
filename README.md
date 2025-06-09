@@ -1,6 +1,8 @@
 Node Folder Gallery
 ====
 
+Just fill the `/gallery` directory with folders of images and GO!  Instant gallery with thumbnails and folder and file views.
+
 Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, EJS, Imagemagick, EXIF, and Memory Cache.
 
 Demo

@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 
 const app = express();
-app.set('views', __dirname + '/views');
+app.set('views', './views');
 app.set('view engine', 'ejs');
 
 const galleryDir = 'gallery';
