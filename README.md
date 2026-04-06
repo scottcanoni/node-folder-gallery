@@ -10,9 +10,9 @@ Display a gallery of images and folders with thumbnails using Node. Allows deep 
 Demo
 ----
 
-[DEMO](https://t81047.sse.codesandbox.io/)
+[DEMO](https://t81047-44421.csb.app/gallery)
 
-[CodeSandbox](https://codesandbox.io/s/node-folder-gallery-example-t81047)
+[CodeSandbox](https://codesandbox.io/p/sandbox/node-folder-gallery-example-t81047)
 
 Features:
 ----
