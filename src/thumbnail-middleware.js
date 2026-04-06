@@ -2,42 +2,57 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const cache = require('memory-cache');
-const im = require('imagemagick-stream');
+const sharp = require('sharp');
+const paths = require('./paths');
 
 module.exports = function (config) {
     const common = require('./common')(config);
     const { staticFiles, cacheDir, verbose } = config;
 
-    return (req, res, next) => {
+    return function thumbnailHandler(req, res, next) {
         let filePath;
         if (req.albumThumbnail) {
-            filePath = req.albumThumbnail;
+            filePath = paths.resolveUnderStatic(staticFiles, req.albumThumbnail);
+            if (!filePath) {
+                return common.error(req, res, next, 400, 'Invalid path');
+            }
         }
         else {
-            filePath = decodeURIComponent(path.join(staticFiles, req.path));
+            filePath = paths.resolveRequestPath(staticFiles, req.path);
+            if (!filePath) {
+                return common.error(req, res, next, 400, 'Invalid path');
+            }
         }
 
-        const stat = fs.statSync(filePath);
-        if (!stat) {
-            return common.error(req, res, next, 404, 'File not found');
+        let stat;
+        try {
+            stat = fs.statSync(filePath);
+        }
+        catch (err) {
+            return common.error(req, res, next, 404, 'File not found', err);
+        }
+        if (!stat.isFile()) {
+            return common.error(req, res, next, 404, 'Not a file');
         }
 
-        // Resize the file and then stream the results to cache and back to the user
-        const dimensions = `${config.thumbnail.width}x${config.thumbnail.height}`;
-        const cachedThumbnailUniqueTraits = filePath + dimensions + req.albumThumbnail;
+        const width = config.thumbnail.width;
+        const height = config.thumbnail.height;
+        const dimensions = `${width}x${height}`;
+        const albumKey = req.albumThumbnail || '';
+        const cachedThumbnailUniqueTraits = filePath + dimensions + albumKey;
         const cachedThumbnailKey = crypto.createHash('md5').update(cachedThumbnailUniqueTraits).digest('hex');
 
         // Check the cache for a previously resized thumbnail of matching file path and dimensions
         const cachedResult = cache.get(cachedThumbnailKey);
 
-        // TODO: eventually should just try the fs.read on cachedResult, existsSync is a bad hack
         if (cachedResult && fs.existsSync(cachedResult)) {
             verbose && console.log('Returning cache for ', cachedThumbnailKey, filePath);
             // cache hit - read & return
             const cacheReadStream = fs.createReadStream(cachedResult);
-            cacheReadStream.on('error', function () {
-                return common.error(req, res, next, 404, 'Cache file not found');
+            cacheReadStream.on('error', function (err) {
+                return common.error(req, res, next, 404, 'Cache file not found', err);
             });
+            res.setHeader('Content-Type', 'image/jpeg');
             return cacheReadStream.pipe(res);
         }
 
@@ -46,33 +61,26 @@ module.exports = function (config) {
             fs.mkdirSync(cacheDir, { recursive: true });
         }
         const cacheWritePath = path.join(cacheDir, `${cachedThumbnailKey}.jpg`);
-        const cacheWriteStream = fs.createWriteStream(cacheWritePath);
-
-        const resizer = im().resize(dimensions).quality(60);
-        resizer.on('error', function (err) {
-            return common.error(req, res, next, 500, 'Error in IM/GM converting file', err);
-        });
 
         verbose && console.log('Reading file and creating cache for ', cachedThumbnailKey, filePath);
-        const fstream = fs.createReadStream(filePath);
-        fstream.on('error', function (err) {
-            return common.error(req, res, next, 404, 'File not found', err);
-        });
-        const resizeStream = fstream.pipe(resizer);
 
-        // Pipe to our tmp cache file, so we can use this in future
-        resizeStream.pipe(cacheWriteStream);
-        cache.put(cachedThumbnailKey, cacheWritePath);
-
-        // Also stream the resized result back as the response
-        cacheWriteStream.on('error', function () {
-            verbose && console.log('cacheWriteStream ERROR for ', filePath);
-            return common.error(req, res, next, 500, 'cacheWriteStream ERROR', err);
-        });
-        cacheWriteStream.on('finish', function () {
-            verbose && console.log('cacheWriteStream finished for ', filePath);
-        });
-
-        return resizeStream.pipe(res);
+        sharp(filePath)
+            .resize(width, height, { fit: 'inside', withoutEnlargement: true })
+            .jpeg({ quality: 60 })
+            .toBuffer()
+            .then(function (buf) {
+                return fs.promises.writeFile(cacheWritePath, buf).then(function () {
+                    return buf;
+                });
+            })
+            .then(function (buf) {
+                cache.put(cachedThumbnailKey, cacheWritePath);
+                res.setHeader('Content-Type', 'image/jpeg');
+                res.send(buf);
+            })
+            .catch(function (err) {
+                verbose && console.log('Sharp thumbnail error', err);
+                return common.error(req, res, next, 500, 'Error generating thumbnail', err);
+            });
     };
 };

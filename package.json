@@ -1,23 +1,32 @@
 {
     "author": "Scott Canoni",
     "name": "node-folder-gallery",
-    "description": "Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, EJS, Imagemagick, EXIF, and Memory Cache.",
-    "version": "0.1.9",
+    "description": "Turn a folder of images into a browsable web gallery—albums, photo pages, breadcrumbs, prev/next, and auto-generated thumbnails, with each photo's EXIF data on photo pages. Built as Express middleware for Node.js: you point it at a directory and wire it into your server.",
+    "version": "1.0.0",
     "license": "WTFPL",
     "repository": {
         "type": "git",
         "url": "https://github.com/scottcanoni/node-folder-gallery.git"
     },
     "main": "src/gallery.js",
+    "exports": {
+        ".": "./src/gallery.js"
+    },
+    "files": [
+        "src",
+        "views"
+    ],
+    "engines": {
+        "node": "^18.18.0 || >=20.0.0"
+    },
     "scripts": {
         "start": "node src/app.js"
     },
     "dependencies": {
-        "ejs": "^3.1.10",
-        "exif": "^0.6.0",
-        "express": "^4.21.2",
-        "gm": "^1.25.1",
-        "imagemagick-stream": "^4.1.1",
-        "memory-cache": "^0.2.0"
+        "ejs": "^5.0.1",
+        "exifr": "^7.1.3",
+        "express": "^5.2.1",
+        "memory-cache": "^0.2.0",
+        "sharp": "^0.34.5"
     }
 }

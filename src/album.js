@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const cache = require('memory-cache');
+const paths = require('./paths');
 const isPhoto = /(\.(jpg|bmp|jpeg|gif|png|tif))$/i;
 
 let config;
@@ -11,9 +12,11 @@ module.exports = function (cfg) {
     const thumbnailMiddleware = require('./thumbnail-middleware')(config);
 
     return function (req, res, next) {
-        // Retrieve the path, decoding %20s etc., replacing leading & trailing slash
         const pathFromReq = common.friendlyPath(req.path);
-        const staticFilesPath = path.join('.', config.staticFiles, pathFromReq);
+        const staticFilesPath = paths.resolveUnderStatic(config.staticFiles, pathFromReq);
+        if (!staticFilesPath) {
+            return common.error(req, res, next, 400, 'Invalid path');
+        }
         const data = {
             ...config,
         };
@@ -32,8 +35,14 @@ module.exports = function (cfg) {
             });
         }
 
-        const files = fs.readdirSync(staticFilesPath);
-        if (!files) {
+        let files;
+        try {
+            files = fs.readdirSync(staticFilesPath);
+        }
+        catch (err) {
+            return common.error(req, res, next, 404, 'No album files found', err);
+        }
+        if (!files || !files.length) {
             return common.error(req, res, next, 404, 'No album files found');
         }
 
@@ -98,21 +107,22 @@ function getThumbnailForAlbum(albumPath, pathFromRequest, cb) {
         return cb(null, cached);
     }
 
-    // TODO - This is a bit messy - reduce number of params we need to pass
     fs.readdir(albumPath, function (err, files) {
+        if (err) {
+            return cb(err);
+        }
         const photos = getPhotos(files, albumPath, pathFromRequest);
         const albums = getAlbums(files, albumPath, pathFromRequest);
         if (photos.length > 0) {
             // We have a photo, let's return the first as the thumb
-            const firstPhoto = path.join(config.staticFiles, photos[0].pathFromRequest);
+            const firstPhotoRel = photos[0].pathFromRequest.split(path.sep).join('/');
 
-            cache.put(albumPath, firstPhoto);
+            cache.put(albumPath, firstPhotoRel);
 
-            return cb(null, firstPhoto);
+            return cb(null, firstPhotoRel);
         }
         else if (albums.length > 0) {
             // No photos found - iterate thru the albums and find a suitable child to return
-            // TODO: If this first sub-album is empty this will fail. Is this OK?
             const firstAlbum = albums[0].name;
             return getThumbnailForAlbum(path.join(albumPath, firstAlbum), path.join(pathFromRequest, firstAlbum), cb);
         }

@@ -1,9 +1,11 @@
 Node Folder Gallery
 ====
 
-Just fill the `/gallery` directory with folders of images and GO!  Instant gallery with thumbnails and folder and file views.
+Just fill the `/gallery` directory with folders of images and GO! Instant gallery with thumbnails and folder and file views.
 
-Display a gallery of images and folders with thumbnails using Node.  Allows for deep linking to specific folders and images which show EXIF data from the file.  Uses ExpressJS, EJS, Imagemagick, EXIF, and Memory Cache.
+Display a gallery of images and folders with thumbnails using Node. Allows deep linking to specific folders and images, with EXIF data on the photo page. Uses Express, EJS, [Sharp](https://sharp.pixelplumbing.com/), [exifr](https://github.com/MikeKovarik/exifr), and memory cache.
+
+**Requirements:** Node.js `^18.18.0` or `>=20` (see `engines` in `package.json`). Dependencies include **Express 5** and **EJS 5** (see `package.json`). Thumbnails are built with [Sharp](https://sharp.pixelplumbing.com/) (prebuilt [libvips](https://libvips.github.io/libvips/) binaries on supported platforms). Unusual environments (Alpine, air‑gapped installs, rare CPU arches) should follow Sharp’s [installation guide](https://sharp.pixelplumbing.com/install). If your host app still uses Express 4, you can usually keep it; this library bundles its own Express for the gallery router. For upgrading an app to Express 5, see the [migration guide](https://expressjs.com/en/guide/migrating-5.html).
 
 Demo
 ----
@@ -25,34 +27,34 @@ Features:
 Dependencies:
 ----
 
-1. ExpressJS to serve pages and handle requests for thumbnails.
-2. Imagemagick to create thumbnails.
-3. Exif to read image metadata.
-4. Memory Cache to save generated thumbnails for performance reasons.
+1. Express to serve pages and handle requests for thumbnails.
+2. Sharp to create thumbnails (libvips via npm on supported platforms).
+3. exifr to read image metadata.
+4. Memory cache to save generated thumbnails for performance.
 
 
 Run
 ----
 
-To run demo locally:
+To run the demo locally:
 
 1. Run `git clone https://github.com/scottcanoni/node-folder-gallery.git`
 2. Run `cd ./node-folder-gallery`
-3. Run `yarn`
-4. Run `yarn start`
+3. Run `npm install`
+4. Run `npm start`
 
-then open a browser to  http://localhost:3000/gallery.
+Then open a browser to `http://localhost:3000/gallery`.
 
 
 Integrate
 ----
 
-Node Folder Gallery is an Express Middleware that you connect to your existing project or use it to start a new project easily.
+Node Folder Gallery is Express middleware you connect to your existing project, or use it to start a new project easily.
 
-1. Run `yarn add node-folder-gallery` or `npm install node-folder-gallery`
-2. Copy the contents of the folder `./example` to your project.
+1. Run `npm install node-folder-gallery`
+2. Copy the contents of the `./example` folder from this repository into your project (or mirror its layout).
 3. Fill the directory named `./gallery` with your own photos or folders of photos.
-4. Optionally modify the file named `index.js` to add your own title, example below.
+4. Optionally change `index.js` to set your own title (see below).
 5. Run `node ./index.js`
 
 
@@ -74,7 +76,7 @@ app.use(`/${galleryDir}`, nodeFolderGalleryMiddleware({
     staticFiles: `${galleryDir}`,
     urlRoot: galleryDir,
     title,
-}), function (req, res, next) {
+}), function (req, res) {
     console.log(`Returning response for ${req.originalUrl}`);
     return res.render(galleryDir, {
         galleryHtml: req.html,
@@ -88,17 +90,10 @@ app.listen(3000, 'localhost');
 console.log(`Web server listening on http://localhost:3000/${galleryDir}`);
 ```
 
-ImageMagick
+Thumbnails and Sharp
 ----
-Node Folder Gallery requires ImageMagick to create thumbnails.
 
-For Windows, select the specific imagemagick installer for your system, e.g., http://sourceforge.net/projects/imagemagick/files/6.8.9-exes/ImageMagick-6.8.9-4-Q16-x64-dll.exe/download
-
-For Mac, install imagemagick from: http://www.imagemagick.org/script/binary-releases.php#macosx
-
-1. Install imagemagick
-2. Make sure that imagemagick tools are available on system path (e.g., you can test if you can run "convert.exe" from CMD)
-3. Restart cygwin, CMD or whatever you use to fire up node.js
+Thumbnails are generated with Sharp. For most Linux, macOS, and Windows installs, `npm install` is enough. If `npm install` fails to load Sharp’s native binary, see [Sharp installation](https://sharp.pixelplumbing.com/install) (Docker, Alpine, proxies, etc.).
 
 Future Ideas
 ----

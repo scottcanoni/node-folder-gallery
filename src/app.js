@@ -15,7 +15,7 @@ app.use(`/${galleryDir}`, require('./gallery.js')({
     urlRoot: galleryDir,
     title,
     render: false,
-}), function (req, res, next) {
+}), function (req, res, _next) {
     console.log(`Returning response for ${req.originalUrl}`);
     return res.render('gallery', {
         galleryHtml: req.html,

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const exif = require('./exif');
+const paths = require('./paths');
 const isPhoto = /(\.(jpg|bmp|jpeg|gif|png|tif))$/i;
 let common;
 
@@ -9,10 +10,11 @@ module.exports = function (config) {
     return function (req, res, next) {
         const albumPath = req.params[0] || ''; // This CAN be undefined, if a photo exists at root
         const photoName = req.params[1] || '';
-        const photoBreadcrumbPath = path.join(albumPath, photoName); // Path for breadcrumb mostly
-        const albumFilesystemPath = './' + path.join(config.staticFiles, albumPath);
-        let photoFileSystemPath;
-        let photoWebPath;
+        const photoBreadcrumbPath = path.join(albumPath, photoName);
+        const albumFilesystemPath = paths.resolveUnderStatic(config.staticFiles, albumPath);
+        if (!albumFilesystemPath) {
+            return common.error(req, res, next, 400, 'Invalid path');
+        }
 
         fs.readdir(albumFilesystemPath, function (err, files) {
             if (err || !files.length) {
@@ -24,8 +26,12 @@ module.exports = function (config) {
             }
 
             const fileName = files[fileIndex];
-            photoWebPath = path.join(config.urlRoot, albumPath, fileName);
-            photoFileSystemPath = path.join(albumFilesystemPath, fileName);
+            const photoWebPath = path.join(config.urlRoot, albumPath, fileName);
+            const photoFileSystemPath = path.join(albumFilesystemPath, fileName);
+            const root = paths.galleryRoot(config.staticFiles);
+            if (!paths.isPathInside(photoFileSystemPath, root)) {
+                return common.error(req, res, next, 400, 'Invalid path');
+            }
 
             const cleanedPhotoWebPath = photoWebPath.replace(/#/g, '%23');
             const breadcrumbs = common.breadcrumb(common.friendlyPath(photoBreadcrumbPath));
@@ -61,6 +67,5 @@ module.exports = function (config) {
                 return next();
             });
         });
-
     };
 };
